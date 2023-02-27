@@ -1,84 +1,82 @@
-import { StatusBar } from "expo-status-bar";
-import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TextInput,
-  Button,
-  TouchableOpacity,
-} from "react-native";
+import React, { useState } from 'react';
+import { StyleSheet, Text, View, TextInput, Button, ImageBackground } from 'react-native';
+
 export default function App() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  return (
-    <View style={styles.container}>
-     <Image style={styles.image} source={require("./assets/straw.jpg")} /> 
-      <StatusBar style="auto" />
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
-          placeholder="Email"
-          placeholderTextColor="#003f5c"
-          onChangeText={(email) => setEmail(email)}
-        /> 
-      </View> 
-      <View style={styles.inputView}>
-        <TextInput
-          style={styles.TextInput}
-          placeholder="Password"
-          placeholderTextColor="#003f5c"
-          secureTextEntry={true}
-          onChangeText={(password) => setPassword(password)}
-        /> 
-      </View> 
-      <TouchableOpacity>
-        <Text style={styles.forgot_button}>Forgot Password?</Text> 
-      </TouchableOpacity> 
-      <TouchableOpacity style={styles.loginBtn}>
-        <Text style={styles.loginText}>LOGIN</Text> 
-      </TouchableOpacity> 
-    </View> 
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-  );
+  const handleLogin = () => {
+    // Here, you would check the user's credentials and if they are valid, set setIsLoggedIn to true
+    setIsLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    // Here, you would clear the user's session and set setIsLoggedIn to false
+    setIsLoggedIn(false);
+  };
+
+  const renderLogin = () => {
+    return (
+      <ImageBackground style={styles.background} source={require('./assets/straw2.jpg')}>
+        <View style={styles.container}>
+          <Text style={styles.title}>Hydroponic System</Text>
+          <TextInput
+            style={styles.input}
+            placeholder="Username"
+            value={username}
+            onChangeText={setUsername}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            value={password}
+            onChangeText={setPassword}
+          />
+          <Button title="Login" onPress={handleLogin} />
+        </View>
+      </ImageBackground>
+    );
+  };
+
+  const renderDashboard = () => {
+    return (
+      <ImageBackground style={styles.background} source={require('./assets/straw2.jpg')}>
+        <View style={styles.container}>
+          <Text style={styles.title}>Welcome to Hydroponic System!</Text>
+          <Button title="Logout" onPress={handleLogout} />
+          {/* Here, you would render the dashboard components, such as water and nutrient levels, temperature, humidity, etc. */}
+        </View>
+      </ImageBackground>
+    );
+  };
+
+  return isLoggedIn ? renderDashboard() : renderLogin();
 }
-const styles = StyleSheet.create({
-  container: {
 
+const styles = StyleSheet.create({
+  background: {
     flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
+    resizeMode: 'cover',
   },
-  image: {
-    marginBottom: 40,
-  },
-  inputView: {
-    backgroundColor: "#FFC0CB",
-    borderRadius: 30,
-    width: "70%",
-    height: 45,
-    marginBottom: 20,
-    alignItems: "center",
-  },
-  TextInput: {
-    height: 50,
+  container: {
     flex: 1,
-    padding: 10,
-    marginLeft: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
-  forgot_button: {
-    height: 30,
-    marginBottom: 30,
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    marginBottom: 16,
   },
-  loginBtn: {
-    width: "80%",
-    borderRadius: 25,
-    height: 50,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 40,
-    backgroundColor: "#FF1493",
+  input: {
+    borderWidth: 1,
+    borderColor: 'gray',
+    padding: 8,
+    marginVertical: 8,
+    minWidth: 200,
+    backgroundColor: 'white',
   },
 });
+
