@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, ImageBackground } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import Dashboard from './components/Dashboard'
+
+const Stack = createStackNavigator();
 
 export default function App() {
   const [username, setUsername] = useState('');
@@ -18,9 +23,9 @@ export default function App() {
 
   const renderLogin = () => {
     return (
-      <ImageBackground style={styles.background} source={require('./assets/straw2.jpg')}>
+      <ImageBackground style={styles.background} source={require('./components/assets/straw2.jpg')}>
         <View style={styles.container}>
-          <Text style={styles.title}>Hydroponic System</Text>
+          <Text style={styles.title1}>Welcome!</Text>
           <TextInput
             style={styles.input}
             placeholder="Username"
@@ -30,6 +35,7 @@ export default function App() {
           <TextInput
             style={styles.input}
             placeholder="Password"
+            secureTextEntry={true}
             value={password}
             onChangeText={setPassword}
           />
@@ -41,17 +47,29 @@ export default function App() {
 
   const renderDashboard = () => {
     return (
-      <ImageBackground style={styles.background} source={require('./assets/straw2.jpg')}>
+      <ImageBackground style={styles.background} source={require('./components/assets/PickaPlant.jpg')}>
         <View style={styles.container}>
-          <Text style={styles.title}>Welcome to Hydroponic System!</Text>
-          <Button title="Logout" onPress={handleLogout} />
+          <Text style={styles.title2}>Welcome to Berry Berry!</Text>
+          <Text style={styles.Plotpick}>Please pick a plot</Text>
           {/* Here, you would render the dashboard components, such as water and nutrient levels, temperature, humidity, etc. */}
+          //<Button title="Logout" onPress={handleLogout} />
+          <Button title="Login" onPress={handleLogin} />
         </View>
       </ImageBackground>
     );
   };
 
-  return isLoggedIn ? renderDashboard() : renderLogin();
+  return (
+    <NavigationContainer>
+      <Stack.Navigator>
+        {isLoggedIn ? (
+          <Stack.Screen name="Dashboard" component={Dashboard} />
+        ) : (
+          <Stack.Screen name="Next" component={renderLogin} />
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -61,22 +79,33 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: 'rgba(255, 255, 255, 0.8)',
     alignItems: 'center',
     justifyContent: 'center',
   },
-  title: {
-    fontSize: 24,
+  title1: {
+    fontSize: 25,
     fontWeight: 'bold',
-    marginBottom: 16,
+    marginBottom: 20,
+  },
+  title2: {
+    fontSize: 25,
+    fontWeight: 'bold',
+    marginTop: 60,
+  },
+  Plotpick: {
+    fontSize: 20,
+    fontWeight: 'regular',
+    marginTop: 30,
   },
   input: {
     borderWidth: 1,
-    borderColor: 'gray',
-    padding: 8,
+    borderRadius: 25,
+    borderColor: 'black',
+    padding: 20,
     marginVertical: 8,
-    minWidth: 200,
+    //minHeight: 45,
+    minWidth: 275,
     backgroundColor: 'white',
+    fontSize: 15,
   },
 });
-
